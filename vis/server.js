@@ -22,10 +22,12 @@ function handleRequest(request, response){
 }
 var server = http.createServer(handleRequest);
 
-server.listen(PORT,'127.0.0.1',function(){
+server.listen(PORT)
+
+//,function(){
     //Callback triggered when server is successfully listening. Hurray!
-        console.log("Server listening on: http://127.0.0.1:%s", PORT);
-});
+//        console.log("Server listening on: http://127.0.0.1:%s", PORT);
+//});
 
 var io = require('socket.io').listen(server);
 
@@ -59,6 +61,13 @@ dispatcher.onPost("/update", function(req, res) {
     var obj = JSON.parse( req.body );
 
     io.emit('update', {data: obj})
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end()
+});
+dispatcher.onPost("/blockupdate", function(req, res) {
+    var obj = JSON.parse( req.body );
+
+    io.emit('blockupdate', {data: obj})
     res.writeHead(200, {'Content-Type': 'text/plain'});
     res.end()
 });
